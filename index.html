@@ -5,26 +5,23 @@
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="manifest" href="/manifest.webmanifest" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#1a2332" />
-    <meta
-      name="description"
-      content="Kenai Auto Sales is Alaska's rugged marketplace for trucks, SUVs, boats, sleds, and winter-ready rigs across the Kenai Peninsula."
-    />
-    <meta
-      name="keywords"
-      content="Kenai auto sales, Alaska trucks, Kenai Peninsula vehicles, Alaska boats, snowmobiles"
-    />
-    <meta property="og:title" content="Kenai Auto Sales | Alaska's Local Vehicle Marketplace" />
-    <meta
-      property="og:description"
-      content="Shop winter-ready trucks, SUVs, boats, ATVs, and dealer inventory built for the Kenai Peninsula."
-    />
+    <meta name="description" content="Browse Kenai auto sales, Alaska trucks, boats, trailers, and snow-ready rigs with local filters built for Peninsula roads, work, and play." />
+    <meta name="keywords" content="kenai auto sales, trucks for sale kenai, alaska vehicles, 4wd trucks anchorage, snowmobile kenai, kenai used cars, alaska boats for sale, kenai trailers, kenai truck marketplace, soldotna vehicles" />
+    <link rel="canonical" href="https://kenaiautosales.com/" />
+    <meta property="og:title" content="Kenai Auto Sales | Kenai Peninsula, Alaska" />
+    <meta property="og:description" content="Browse Kenai auto sales, Alaska trucks, boats, trailers, and snow-ready rigs with local filters built for Peninsula roads, work, and play." />
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://kenaiautosales.com" />
-    <meta
-      property="og:image"
-      content="https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=1200&q=80"
-    />
+    <meta property="og:url" content="https://kenaiautosales.com/" />
+    <meta property="og:image" content="https://kenaiautosales.com/og-image.svg" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:site_name" content="Kenai Auto Sales" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Kenai Auto Sales | Kenai Peninsula, Alaska" />
+    <meta name="twitter:description" content="Browse Kenai auto sales, Alaska trucks, boats, trailers, and snow-ready rigs with local filters built for Peninsula roads, work, and play." />
+    <meta name="twitter:image" content="https://kenaiautosales.com/og-image.svg" />
+    <meta name="geo.region" content="US-AK" />
+    <meta name="geo.placename" content="Kenai Peninsula, Alaska" />
+    <meta name="theme-color" content="#1a2332" />
     <script>
       (() => {
         const stored = localStorage.getItem('kenai-auto-sales-theme');
@@ -32,7 +29,28 @@
         document.documentElement.classList.toggle('dark', isDark);
       })();
     </script>
-    <title>Kenai Auto Sales | Alaska's Local Vehicle Marketplace</title>
+    <title>Kenai Auto Sales | Kenai Peninsula, Alaska</title>
+    <script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "AutoDealer",
+      "name": "Kenai Auto Sales",
+      "url": "https://kenaiautosales.com",
+      "areaServed": "Kenai Peninsula Borough, Alaska"
+    },
+    {
+      "@type": "WebSite",
+      "name": "Kenai Auto Sales",
+      "url": "https://kenaiautosales.com",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://kenaiautosales.com/browse?make={search_term_string}",
+        "query-input": "required name=search_term_string"
+      }
+    }
+  ]
+}</script>
   </head>
   <body class="bg-slate-950 text-slate-100 antialiased">
     <div id="root"></div>

@@ -6,6 +6,7 @@ import { Bell, CarFront, ChevronLeft, ChevronRight, Heart, Mail, MapPin, Menu, M
 import { Link, NavLink, Outlet } from 'react-router-dom';
 import type { ThemeMode, Vehicle } from './types';
 import { cn, currency, monthlyPayment, number } from './lib/utils';
+import { KenaiNetworkBanner } from './components/KenaiNetworkBanner';
 
 const networkLinks = [
   ['Kenai Borough', 'https://kenaiborough.com'],
@@ -240,6 +241,7 @@ export const Layout = () => {
       </header>
       <main className="mx-auto flex max-w-7xl flex-col gap-16 px-4 py-8 sm:px-6 lg:px-8"><Outlet /></main>
       <footer className="border-t border-white/10 bg-slate-950/90">
+        <KenaiNetworkBanner />
         <div className="mx-auto grid max-w-7xl gap-10 px-4 py-12 sm:px-6 lg:grid-cols-[1.2fr,1fr] lg:px-8">
           <div className="space-y-4">
             <h3 className="text-2xl font-semibold text-white">Built for Alaska buyers, sellers, and dealers.</h3>

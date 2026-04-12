@@ -7,6 +7,7 @@ import { CarFront, Filter, Gauge, Landmark, Search, Shield, Sparkles, Truck, Use
 import { Badge, Button, Card, FeaturedCarousel, FinanceCalculator, MapCard, MetricCard, SectionHeading, SellerCard, VehicleCard, useToast } from './components';
 import { bodyTypes, conditionOptions, featureOptions, featuredVehicles, fuelOptions, homeStats, makes, models, sellerTypes, vehicles } from './data/vehicles';
 import { currency, number } from './lib/utils';
+import { CrossTrafficAds } from './components/CrossTrafficAds';
 
 const cmpLabel = (price: number, marketAverage: number) => {
   const delta = price / marketAverage;
@@ -32,8 +33,8 @@ export const HomePage = () => {
   return (
     <>
       <Helmet>
-        <title>Kenai Auto Sales | Shop Alaska Trucks, SUVs, Boats & Toys</title>
-        <meta name="description" content="Browse Alaska-ready trucks, SUVs, sleds, boats, and dealer inventory tuned for Kenai Peninsula living." />
+        <title>Kenai Auto Sales | Kenai Peninsula, Alaska</title>
+        <meta name="description" content="Browse Kenai auto sales, Alaska trucks, boats, trailers, and snow-ready rigs with local filters built for Peninsula roads, work, and play." />
       </Helmet>
 
       <section className="relative overflow-hidden rounded-[2rem] border border-white/10 bg-rugged p-8 shadow-glow md:p-12">
@@ -94,7 +95,8 @@ export const HomePage = () => {
           <Link to="/sell"><Button className="w-full justify-center">Start your listing</Button></Link>
         </Card>
       </section>
-    </>
+          <CrossTrafficAds />
+</>
   );
 };
 
