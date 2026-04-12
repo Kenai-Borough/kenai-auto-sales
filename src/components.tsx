@@ -7,6 +7,8 @@ import { Link, NavLink, Outlet } from 'react-router-dom';
 import type { ThemeMode, Vehicle } from './types';
 import { cn, currency, monthlyPayment, number } from './lib/utils';
 import { KenaiNetworkBanner } from './components/KenaiNetworkBanner';
+import { KenaiNetworkBadge } from './components/KenaiNetworkBadge';
+import { useKenaiAuth } from './contexts/KenaiAuthContext';
 
 const networkLinks = [
   ['Kenai Borough', 'https://kenaiborough.com'],
@@ -202,6 +204,7 @@ export const SellerCard = ({ vehicle }: { vehicle: Vehicle }) => {
 export const Layout = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [theme, setTheme] = useState<ThemeMode>(() => (document.documentElement.classList.contains('dark') ? 'dark' : 'light'));
+  const auth = useKenaiAuth();
 
   useEffect(() => {
     document.documentElement.classList.toggle('dark', theme === 'dark');
@@ -233,11 +236,12 @@ export const Layout = () => {
             <button onClick={() => setTheme((current) => (current === 'dark' ? 'light' : 'dark'))} className="rounded-full border border-white/10 p-2 text-slate-200">
               {theme === 'dark' ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
             </button>
-            <Link to="/auth" className="rounded-full border border-white/10 px-4 py-2 text-sm text-white">Sign in</Link>
+            {auth.user ? <KenaiNetworkBadge /> : null}
+            {auth.user ? <><Link to="/account" className="rounded-full border border-white/10 px-4 py-2 text-sm text-white">Account</Link><button onClick={() => void auth.signOut()} className="rounded-full border border-white/10 px-4 py-2 text-sm text-white">Sign out</button></> : <Link to="/sign-in" className="rounded-full border border-white/10 px-4 py-2 text-sm text-white">Sign in</Link>}
           </div>
           <button onClick={() => setMobileOpen((current) => !current)} className="rounded-full border border-white/10 p-2 text-white md:hidden"><Menu className="h-5 w-5" /></button>
         </div>
-        {mobileOpen && <div className="border-t border-white/10 px-4 py-4 md:hidden"><div className="flex flex-col gap-3 text-sm text-slate-200">{[['Browse', '/browse'], ['Sell', '/sell'], ['Dashboard', '/dashboard'], ['Dealer', '/dealer'], ["Buyer's Guide", '/buyers-guide'], ['Auth', '/auth']].map(([label, href]) => <Link key={href} to={href} onClick={() => setMobileOpen(false)}>{label}</Link>)}</div></div>}
+        {mobileOpen && <div className="border-t border-white/10 px-4 py-4 md:hidden"><div className="flex flex-col gap-3 text-sm text-slate-200">{[['Browse', '/browse'], ['Sell', '/sell'], ['Dashboard', '/dashboard'], ['Dealer', '/dealer'], ["Buyer's Guide", '/buyers-guide'], [auth.user ? 'Account' : 'Sign in', auth.user ? '/account' : '/sign-in']].map(([label, href]) => <Link key={href} to={href} onClick={() => setMobileOpen(false)}>{label}</Link>)}</div></div>}
       </header>
       <main className="mx-auto flex max-w-7xl flex-col gap-16 px-4 py-8 sm:px-6 lg:px-8"><Outlet /></main>
       <footer className="border-t border-white/10 bg-slate-950/90">
