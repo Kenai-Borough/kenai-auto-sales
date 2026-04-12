@@ -1,4 +1,6 @@
 import { useMemo, useState } from 'react';
+import { emailService } from './lib/email';
+import { emailTemplates } from './lib/email-templates';
 import { Helmet } from 'react-helmet-async';
 import { Link, useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
@@ -251,6 +253,7 @@ export const DashboardPage = () => {
 
 export const DealerPage = () => {
   const dealerRows = vehicles.filter((vehicle) => vehicle.seller.type === 'dealer').slice(0, 6);
+  const { push } = useToast();
 
   return (
     <>
@@ -268,7 +271,7 @@ export const DealerPage = () => {
         </Card>
         <div className="grid gap-6">
           <Card><h3 className="text-xl font-semibold text-white">Lead funnel</h3><ResponsiveContainer width="100%" height={240}><BarChart data={[{ stage: 'Views', count: 940 }, { stage: 'Saves', count: 212 }, { stage: 'Leads', count: 61 }, { stage: 'Appointments', count: 19 }]}><CartesianGrid stroke="#1e293b" /><XAxis dataKey="stage" stroke="#94a3b8" /><YAxis stroke="#94a3b8" /><Tooltip /><Bar dataKey="count" fill="#f97316" radius={[10, 10, 0, 0]} /></BarChart></ResponsiveContainer></Card>
-          <Card className="bg-accent/10"><h3 className="text-xl font-semibold text-white">Featured placement upsell</h3><p className="mt-3 text-sm text-orange-100">Reserve homepage carousel space, spotlight your winter inventory, and syndicate top listings across sister sites in the Kenai network.</p><Button className="mt-5">Request featured placement</Button></Card>
+          <Card className="bg-accent/10"><h3 className="text-xl font-semibold text-white">Featured placement upsell</h3><p className="mt-3 text-sm text-orange-100">Reserve homepage carousel space, spotlight your winter inventory, and syndicate top listings across sister sites in the Kenai network.</p><Button className="mt-5" onClick={() => void (async () => { const leadEmail = emailTemplates.dealerLeadNotification({ campaignName: 'Featured placement request', contactName: 'Dealer portal visitor', contactEmail: 'dealer@kenaiautosales.com', detailUrl: `${window.location.origin}/dealer` }); const result = await emailService.send({ to: 'hello@kenaiautosales.com', ...leadEmail, metadata: { notificationType: 'dealer-lead' } }); push(result.queued ? 'Featured placement request saved. Email delivery may be delayed.' : 'Featured placement request sent to the network team.') })()}>Request featured placement</Button></Card>
         </div>
       </section>
     </>

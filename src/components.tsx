@@ -9,6 +9,8 @@ import { cn, currency, monthlyPayment, number } from './lib/utils';
 import { KenaiNetworkBanner } from './components/KenaiNetworkBanner';
 import { KenaiNetworkBadge } from './components/KenaiNetworkBadge';
 import { useKenaiAuth } from './contexts/KenaiAuthContext';
+import { emailService } from './lib/email';
+import { emailTemplates } from './lib/email-templates';
 
 const networkLinks = [
   ['Kenai Borough', 'https://kenaiborough.com'],
@@ -177,6 +179,22 @@ export const MapCard = ({ vehicle }: { vehicle: Vehicle }) => (
 
 export const SellerCard = ({ vehicle }: { vehicle: Vehicle }) => {
   const { push } = useToast();
+
+  async function handleInquiry(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const form = new FormData(event.currentTarget);
+    const buyerName = String(form.get('buyerName') || 'Interested buyer');
+    const buyerContact = String(form.get('buyerContact') || 'No contact supplied');
+    const message = String(form.get('message') || `Hi, I\'m interested in the ${vehicle.year} ${vehicle.make} ${vehicle.model}. Is it still available?`);
+    const sellerEmail = emailTemplates.vehicleInquiry({ vehicleTitle: `${vehicle.year} ${vehicle.make} ${vehicle.model}`, buyerName, buyerContact, message, detailUrl: window.location.href });
+    const buyerConfirmation = emailTemplates.inquiryConfirmation({ recipientName: buyerName, listingTitle: `${vehicle.year} ${vehicle.make} ${vehicle.model}`, detailUrl: window.location.href });
+    const results = await Promise.all([
+      emailService.send({ to: 'hello@kenaiautosales.com', ...sellerEmail, metadata: { notificationType: 'vehicle-inquiry', vehicleId: vehicle.id } }),
+      buyerContact.includes('@') ? emailService.send({ to: buyerContact, ...buyerConfirmation, metadata: { notificationType: 'vehicle-inquiry-confirmation', vehicleId: vehicle.id } }) : Promise.resolve({ queued: false }),
+    ]);
+    push(results.some((result) => result.queued) ? 'Message sent (email notification may be delayed).' : `Inquiry sent for ${vehicle.make} ${vehicle.model}.`);
+    event.currentTarget.reset();
+  }
   return (
     <Card className="space-y-4">
       <div className="flex items-center justify-between gap-3">
@@ -191,10 +209,10 @@ export const SellerCard = ({ vehicle }: { vehicle: Vehicle }) => {
         <div><span className="text-slate-500">Seller type</span><div className="capitalize">{vehicle.seller.type}</div></div>
         <div><span className="text-slate-500">Contact</span><div>{vehicle.seller.phone}</div></div>
       </div>
-      <form className="space-y-3" onSubmit={(event) => { event.preventDefault(); push(`Inquiry sent for ${vehicle.make} ${vehicle.model}.`); }}>
-        <input className="w-full rounded-2xl border border-white/10 bg-slate-950 px-4 py-3 text-sm text-white outline-none" placeholder="Your name" />
-        <input className="w-full rounded-2xl border border-white/10 bg-slate-950 px-4 py-3 text-sm text-white outline-none" placeholder="Email or phone" />
-        <textarea className="min-h-28 w-full rounded-2xl border border-white/10 bg-slate-950 px-4 py-3 text-sm text-white outline-none" defaultValue={`Hi, I'm interested in the ${vehicle.year} ${vehicle.make} ${vehicle.model}. Is it still available?`} />
+      <form className="space-y-3" onSubmit={(event) => void handleInquiry(event)}>
+        <input className="w-full rounded-2xl border border-white/10 bg-slate-950 px-4 py-3 text-sm text-white outline-none" name="buyerName" placeholder="Your name" required />
+        <input className="w-full rounded-2xl border border-white/10 bg-slate-950 px-4 py-3 text-sm text-white outline-none" name="buyerContact" placeholder="Email or phone" required />
+        <textarea className="min-h-28 w-full rounded-2xl border border-white/10 bg-slate-950 px-4 py-3 text-sm text-white outline-none" name="message" defaultValue={`Hi, I'm interested in the ${vehicle.year} ${vehicle.make} ${vehicle.model}. Is it still available?`} />
         <Button type="submit" className="w-full"><Mail className="h-4 w-4" /> Contact seller</Button>
       </form>
     </Card>
