@@ -17,7 +17,7 @@ const cmpLabel = (price: number, marketAverage: number) => {
   return 'Overpriced';
 };
 
-const heroBackground = 'https://images.unsplash.com/photo-1511919884226-fd3cad34687c?auto=format&fit=crop&w=1600&q=80';
+const heroBackground = '/hero-illustration.svg';
 
 export const HomePage = () => {
   const navigate = useNavigate();
