@@ -1,0 +1,17 @@
+{
+  "name": "Kenai Auto Sales",
+  "short_name": "Kenai Auto",
+  "description": "Alaska-first marketplace for winter-ready vehicles, trucks, SUVs, boats, snowmobiles, and dealer inventory.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#1a2332",
+  "theme_color": "#1a2332",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
