@@ -1,4 +1,5 @@
 
+import { lazy, Suspense } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { Layout, ToastProvider } from './components';
 import { AdminRoute } from './components/auth/AdminRoute';
@@ -23,6 +24,7 @@ import PrivacyPolicy from './pages/legal/PrivacyPolicy';
 import CookiePolicy from './pages/legal/CookiePolicy';
 import DMCA from './pages/legal/DMCA';
 import AcceptableUse from './pages/legal/AcceptableUse';
+const EscrowTransactionPage = lazy(() => import('./pages/EscrowTransactionPage'));
 
 export default function App() {
   return (
@@ -36,6 +38,8 @@ export default function App() {
               <Route path="/vehicle/:id" element={<VehicleDetailPage />} />
               <Route path="/sell" element={<SellPage />} />
               <Route path="/dashboard" element={<ProtectedRoute><DashboardPage /></ProtectedRoute>} />
+              <Route path="/escrow/:id" element={<Suspense fallback={<div className="min-h-screen flex items-center justify-center"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-cyan-400"/></div>}><ProtectedRoute><EscrowTransactionPage /></ProtectedRoute></Suspense>} />
+              <Route path="/escrow/demo" element={<Suspense fallback={<div />}><EscrowTransactionPage /></Suspense>} />
               <Route path="/dealer" element={<ProtectedRoute allowedRoles={['dealer', 'admin']}><DealerPage /></ProtectedRoute>} />
               <Route path="/buyers-guide" element={<BuyersGuidePage />} />
               <Route path="/sign-in" element={<KenaiSignIn />} />
